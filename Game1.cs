@@ -1,52 +1,54 @@
-﻿using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using Microsoft.Xna.Framework.Input;
+namespace BitQuest;
 
-namespace FinalProject
+public class Game1 : Game
 {
-    public class Game1 : Game
+    private readonly GraphicsDeviceManager _graphics;
+    private GameManager _gameManager;
+
+    public Game1()
     {
-        private GraphicsDeviceManager _graphics;
-        private SpriteBatch _spriteBatch;
+        _graphics = new GraphicsDeviceManager(this);
+        Content.RootDirectory = "Content";
+        IsMouseVisible = true;
+    }
 
-        public Game1()
-        {
-            _graphics = new GraphicsDeviceManager(this);
-            Content.RootDirectory = "Content";
-            IsMouseVisible = true;
-        }
+    protected override void Initialize()
+    {
+        Globals.WindowSize = new(800, 600);
+        _graphics.PreferredBackBufferWidth = Globals.WindowSize.X;
+        _graphics.PreferredBackBufferHeight = Globals.WindowSize.Y;
+        _graphics.ApplyChanges();
 
-        protected override void Initialize()
-        {
-            // TODO: Add your initialization logic here
+        Globals.Content = Content;
+        base.Initialize();
+    }
 
-            base.Initialize();
-        }
+    protected override void LoadContent()
+    {
+        Globals.SpriteBatch = new SpriteBatch(GraphicsDevice);
+        Globals.GraphicsDevice = GraphicsDevice;
 
-        protected override void LoadContent()
-        {
-            _spriteBatch = new SpriteBatch(GraphicsDevice);
+        _gameManager = new();
+    }
 
-            // TODO: use this.Content to load your game content here
-        }
+    protected override void Update(GameTime gameTime)
+    {
+        if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
+            Exit();
 
-        protected override void Update(GameTime gameTime)
-        {
-            if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
-                Exit();
+        Globals.Update(gameTime);
+        InputManager.Update();
+        _gameManager.Update();
 
-            // TODO: Add your update logic here
+        base.Update(gameTime);
+    }
 
-            base.Update(gameTime);
-        }
+    protected override void Draw(GameTime gameTime)
+    {
+        GraphicsDevice.Clear(Color.Black);
 
-        protected override void Draw(GameTime gameTime)
-        {
-            GraphicsDevice.Clear(Color.CornflowerBlue);
+        _gameManager.Draw();
 
-            // TODO: Add your drawing code here
-
-            base.Draw(gameTime);
-        }
+        base.Draw(gameTime);
     }
 }
