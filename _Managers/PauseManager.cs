@@ -9,7 +9,6 @@ namespace BitQuest
     {
         private bool _isPaused; // Track pause state
         private SpriteFont _font; // Font for pause text
-        private Texture2D _backgroundTexture; // Optional: Pause screen background
         private Song _pauseMusic; // Pause music
         private GameState _previousGameState; // To restore the game state after pausing
 
@@ -21,7 +20,6 @@ namespace BitQuest
         public void LoadContent()
         {
             _font = Globals.Content.Load<SpriteFont>("font"); // Load font
-            //_backgroundTexture = Globals.Content.Load<Texture2D>("pauseBackground"); // Background image
             _pauseMusic = Globals.Content.Load<Song>("PausedGameSound"); // Pause music
         }
 
@@ -29,21 +27,21 @@ namespace BitQuest
 
         public void Update(GameState currentGameState)
         {
-            // Use InputManager to toggle pause with the P key
+            // Check for the "P" key press to toggle pause
             if (InputManager.IsKeyPressed(Keys.P))
             {
                 _isPaused = !_isPaused;
 
                 if (_isPaused)
                 {
-                    _previousGameState = currentGameState;
-                    MediaPlayer.Pause(); // Pause current music
-                    MediaPlayer.Play(_pauseMusic); // Play pause music
+                    _previousGameState = currentGameState; // Save the current game state
+                    MediaPlayer.Pause(); // Pause the current music
+                    MediaPlayer.Play(_pauseMusic); // Play the pause music
                 }
                 else
                 {
                     MediaPlayer.Stop(); // Stop pause music
-                    MediaPlayer.Resume(); // Resume original music
+                    MediaPlayer.Resume(); // Resume the original music
                 }
             }
         }
@@ -54,8 +52,8 @@ namespace BitQuest
             {
                 Globals.SpriteBatch.Begin();
 
-                // Draw a semi-transparent background
-                Globals.SpriteBatch.Draw(_backgroundTexture, new Rectangle(0, 0, Globals.WindowSize.X, Globals.WindowSize.Y), Color.Black * 0.5f);
+                // Draw a semi-transparent overlay for the pause screen
+                Globals.SpriteBatch.Draw(Globals.Content.Load<Texture2D>("pauseBackground"), new Rectangle(0, 0, Globals.WindowSize.X, Globals.WindowSize.Y), Color.Black * 0.5f);
 
                 // Draw "Game Paused" text
                 string pauseText = "Game Paused\nPress P to Resume";

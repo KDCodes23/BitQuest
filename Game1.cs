@@ -39,8 +39,10 @@ namespace BitQuest
         {
             Globals.Update(gameTime);
             InputManager.Update();
+
             _gameManager.Update();
 
+            // Exit the game if Escape is pressed
             if (InputManager.IsKeyPressed(Keys.Escape))
             {
                 Exit();

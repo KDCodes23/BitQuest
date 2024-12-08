@@ -137,7 +137,10 @@ public class GameManager
             }
         }
     }
-
+    public GameState GetCurrentGameState()
+    {
+        return _currentGameState;  // Return the current game state
+    }
     private void UpdateMusic()
     {
         switch (_currentGameState)
@@ -213,12 +216,13 @@ public class GameManager
 
             case GameState.Paused:
                 if (InputManager.IsKeyPressed(Keys.P))
-                { 
+                {
                     _currentGameState = GameState.Playing;
                 }
                 break;
         }
     }
+    
 
     public void Draw()
     {
