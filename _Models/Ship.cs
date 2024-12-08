@@ -45,7 +45,7 @@ public class Ship(Texture2D texture)
         if (_shotCooldown < 0)
         {
             _shotCooldown += SHOT_COOLDOWN;
-            ProjectileManager.AddProjectile(new(Position.X + 20, Position.Y));
+            ProjectileManager.AddProjectile(new(Position.X + 30, Position.Y));
         }
     }
 

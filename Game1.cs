@@ -1,54 +1,59 @@
-namespace BitQuest;
+using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Input;
 
-public class Game1 : Game
+namespace BitQuest
 {
-    private readonly GraphicsDeviceManager _graphics;
-    private GameManager _gameManager;
-
-    public Game1()
+    public class Game1 : Game
     {
-        _graphics = new GraphicsDeviceManager(this);
-        Content.RootDirectory = "Content";
-        IsMouseVisible = true;
-    }
+        private readonly GraphicsDeviceManager _graphics;
+        private GameManager _gameManager;
 
-    protected override void Initialize()
-    {
-        Globals.WindowSize = new(800, 600);
-        _graphics.PreferredBackBufferWidth = Globals.WindowSize.X;
-        _graphics.PreferredBackBufferHeight = Globals.WindowSize.Y;
-        _graphics.ApplyChanges();
+        public Game1()
+        {
+            _graphics = new GraphicsDeviceManager(this);
+            Content.RootDirectory = "Content";
+            IsMouseVisible = true;
+        }
 
-        Globals.Content = Content;
-        base.Initialize();
-    }
+        protected override void Initialize()
+        {
+            Globals.WindowSize = new(800, 600);
+            _graphics.PreferredBackBufferWidth = Globals.WindowSize.X;
+            _graphics.PreferredBackBufferHeight = Globals.WindowSize.Y;
+            _graphics.ApplyChanges();
 
-    protected override void LoadContent()
-    {
-        Globals.SpriteBatch = new SpriteBatch(GraphicsDevice);
-        Globals.GraphicsDevice = GraphicsDevice;
+            Globals.Content = Content;
+            base.Initialize();
+        }
 
-        _gameManager = new();
-    }
+        protected override void LoadContent()
+        {
+            Globals.SpriteBatch = new SpriteBatch(GraphicsDevice);
+            Globals.GraphicsDevice = GraphicsDevice;
 
-    protected override void Update(GameTime gameTime)
-    {
-        if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
-            Exit();
+            _gameManager = new GameManager();
+        }
 
-        Globals.Update(gameTime);
-        InputManager.Update();
-        _gameManager.Update();
+        protected override void Update(GameTime gameTime)
+        {
+            Globals.Update(gameTime);
+            InputManager.Update();
+            _gameManager.Update();
 
-        base.Update(gameTime);
-    }
+            if (InputManager.IsKeyPressed(Keys.Escape))
+            {
+                Exit();
+            }
 
-    protected override void Draw(GameTime gameTime)
-    {
-        GraphicsDevice.Clear(Color.Black);
+            base.Update(gameTime);
+        }
 
-        _gameManager.Draw();
-
-        base.Draw(gameTime);
+        protected override void Draw(GameTime gameTime)
+        {
+            GraphicsDevice.Clear(Color.Black);
+            _gameManager.Draw();
+            base.Draw(gameTime);
+        }
     }
 }

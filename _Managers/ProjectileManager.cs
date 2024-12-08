@@ -6,6 +6,8 @@ public static class ProjectileManager
     public static readonly List<Projectile> EnemyProjectiles = [];
     private static Texture2D _projectile;
     private static Texture2D _enemyProjectile;
+    private static SoundEffect _projectileSound;
+    private static float _projectileVolume = 0.23f ;
 
     public static void Restart()
     {
@@ -17,6 +19,7 @@ public static class ProjectileManager
     {
         _projectile ??= Globals.Content.Load<Texture2D>("projectile1");
         Projectile projectile = new(_projectile, position, new(0, -1), 700);
+
         Projectiles.Add(projectile);
     }
 
